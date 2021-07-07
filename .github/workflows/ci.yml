@@ -11,8 +11,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: [3.7, 3.8, 3.9]
+        os: [macos-latest]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -35,9 +35,8 @@ jobs:
       run: |
         printenv
 
-    - name: JAX debug
-      run: |
-        printf '\n\n# python -v debug_32b.py\n\n\n'
-        python -v debug_32b.py
-        printf '\n\n# python -v debug_64b.py\n\n\n'
-        python -v debug_64b.py
+    - name: Start SSH session
+      uses: luchihoratiu/debug-via-ssh@main
+      with:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        SSH_PASS: ${{ secrets.SSH_PASS }}
